@@ -1,0 +1,8 @@
+<?php
+
+return [
+    'class' => 'yii\redis\Connection',
+    'hostname' => 'YOUR_HOST',
+    'port' => YOUR_PORT,
+    'database' => 0,
+];
