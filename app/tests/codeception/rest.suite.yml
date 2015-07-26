@@ -1,0 +1,13 @@
+class_name: RestTester
+modules:
+    enabled:
+      - PhpBrowser
+      - REST
+      - RestHelper
+    config:
+        Yii2:
+          configFile: 'codeception/config/rest.php'
+        PhpBrowser:
+          url: 'http://localhost:8080/index-test.php'
+        REST:
+          url: 'http://localhost:8080/index-test.php/v1/'

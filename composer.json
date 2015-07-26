@@ -1,0 +1,69 @@
+{
+	"name": "anidesu",
+	"description": "Anidesu anime site",
+	"keywords": ["yii2"],
+	"homepage": "http://www.yiiframework.com/",
+	"type": "project",
+	"license": "BSD-3-Clause",
+	"support": {
+		"issues": "https://github.com/yiisoft/yii2/issues?state=open",
+		"forum": "http://www.yiiframework.com/forum/",
+		"wiki": "http://www.yiiframework.com/wiki/",
+		"irc": "irc://irc.freenode.net/yii",
+		"source": "https://github.com/yiisoft/yii2"
+	},
+	"minimum-stability": "dev",
+	"require": {
+		"php": ">=5.4.0",
+        "yiisoft/yii2": "@stable",
+		"yiisoft/yii2-bootstrap": "@stable",
+		"yiisoft/yii2-swiftmailer": "*",
+		"yiisoft/yii2-redis": "*",
+		"yiisoft/yii2-authclient": "*",
+		"yiisoft/yii2-twig": "*",
+		"yiisoft/yii2-imagine": "*",
+        "yiisoft/yii2-jui": "@stable",
+
+        "dmstr/yii2-migrate-command": "*",
+		"artkost/yii2-attachment": "dev-master",
+		"artkost/yii2-taxonomy": "dev-master"
+    },
+	"require-dev": {
+        "yiisoft/yii2-debug": "*",
+        "yiisoft/yii2-gii": "*",
+		"yiisoft/yii2-faker": "*",
+        "yiisoft/yii2-codeception": "*",
+        "codeception/codeception": "@stable",
+        "codeception/specify": "@stable",
+        "codeception/verify": "@stable",
+        "flow/jsonpath": "@stable"
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject"
+        ],
+        "post-update-cmd": [
+        ]
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "runtime": "0777",
+                    "public/assets": "0777",
+                    "yii": "0755"
+                }
+            ],
+            "generateCookieValidationKey": [
+                "config/web.php"
+            ]
+        },
+        "asset-installer-paths": {
+            "npm-asset-library": "node_modules",
+            "bower-asset-library": "public/vendor"
+        }
+    }
+}

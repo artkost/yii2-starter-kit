@@ -1,0 +1,19 @@
+{
+  "name": "assets",
+  "version": "0.0.0",
+  "authors": [
+    "Nikolay Kostyurin <jilizart@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "material-design-lite": "~1.0.0"
+  }
+}
