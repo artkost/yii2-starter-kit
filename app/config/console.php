@@ -1,6 +1,4 @@
 <?php
-require_once(__DIR__ . '/../base/ModuleManager.php');
-use app\base\ModuleManager;
 
 Yii::setAlias('@tests', dirname(__DIR__) . '/tests');
 
@@ -10,19 +8,17 @@ $db = require(__DIR__ . '/db.php');
 $routes = require(__DIR__ . '/routes.php');
 $rbac = require(__DIR__ . '/rbac.php');
 
-$modules = ModuleManager::getConfig('console');
-
-$bootstrap = ModuleManager::getBootstrap();
-$bootstrap[] = 'log';
-
 return [
     'id' => 'anidesu',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => $bootstrap,
+    'bootstrap' => [
+        'log',
+        '\app\base\ModuleManager',
+    ],
     'aliases' => $aliases,
     'controllerNamespace' => 'app\commands',
 
-    'modules' => $modules,
+    'modules' => [],
 
     'controllerMap' => [
         'migrate' => [

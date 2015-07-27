@@ -1,30 +1,22 @@
 <?php
 
-require_once(__DIR__ . '/../base/ModuleManager.php');
-
-use app\base\ModuleManager;
-
 $params = require(__DIR__ . '/params.php');
 $aliases = require(__DIR__ . '/aliases.php');
 $db = require(__DIR__ . '/db.php');
 $routes = require(__DIR__ . '/routes.php');
 $rbac = require(__DIR__ . '/rbac.php');
 
-$modules = ModuleManager::getConfig();
-$bootstrap = ModuleManager::getBootstrap();
-
-$bootstrap[] = [
-    'class' => $params['theme']
-];
-$bootstrap[] = 'log';
-
 $config = [
-    'id' => 'basic',
+    'id' => 'frontend',
     'name' => $params['title'],
     'basePath' => dirname(__DIR__),
-    'bootstrap' => $bootstrap,
+    'bootstrap' => [
+        'log',
+        '\app\base\ModuleManager',
+        $params['theme']
+    ],
     'aliases' => $aliases,
-    'modules' => $modules,
+    'modules' => [],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation

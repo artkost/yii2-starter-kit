@@ -1,11 +1,9 @@
 <?php
 
-require_once(__DIR__ . '/../base/ModuleManager.php');
-use app\base\ModuleManager;
-
+$modules = require(__DIR__ . '/modules.php');
 $migrations = [];
 
-foreach (ModuleManager::getConfig() as $id => $module) {
+foreach ($modules as $id) {
     $alias = '@app/modules/' . $id . '/migrations';
     $migrations[] = $alias;
 }
