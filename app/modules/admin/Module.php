@@ -9,6 +9,7 @@ use yii\base\BootstrapInterface;
 use yii\base\InvalidConfigException;
 use yii\base\Module as BaseModule;
 use yii\console\Application as ConsoleApplication;
+use yii\helpers\Url;
 
 class Module extends BaseModule implements BootstrapInterface
 {
@@ -66,5 +67,10 @@ class Module extends BaseModule implements BootstrapInterface
         }
 
         return self::$menu;
+    }
+
+    public static function siteUrl()
+    {
+        return str_replace(ADMIN_PREFIX, '', Url::base(true));
     }
 }

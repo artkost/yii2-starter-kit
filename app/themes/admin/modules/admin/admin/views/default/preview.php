@@ -16,7 +16,7 @@ $this->params['breadcrumbs'] = [
     $this->title
 ];
 
-$site = Module::param('site.url', str_replace(ADMIN_PREFIX, '', Url::base(true)));
+$site = Module::siteUrl();
 
 $js = <<<JS
     jQuery(function($) {

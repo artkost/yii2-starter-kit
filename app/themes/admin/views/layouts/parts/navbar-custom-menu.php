@@ -1,5 +1,6 @@
 <?php
 
+use app\modules\admin\Module;
 use app\themes\admin\Theme;
 
 
@@ -124,8 +125,10 @@ $name = ($profile) ? $profile->getFullName() : $identity->username;
                 <li>
                     <a href="#"><?= Theme::t('admin', 'Sign out') ?></a>
                 </li>
-
             </ul>
+        </li>
+        <li>
+            <a href="<?= Module::siteUrl() ?>" target="_blank"><i class="fa fa-external-link"></i></a>
         </li>
         <!-- Control Sidebar Toggle Button -->
         <li>
