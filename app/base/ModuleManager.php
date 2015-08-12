@@ -7,11 +7,9 @@ use Exception;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Component;
-use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
-use yii\web\Application;
 
 /**
  * Manages and bootstraps modules

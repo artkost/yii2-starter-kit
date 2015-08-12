@@ -12,4 +12,6 @@ $config = yii\helpers\ArrayHelper::merge(
     require(dirname(dirname(__DIR__)) . '/app/config/admin.php')
 );
 
+define('ADMIN_PREFIX', str_replace(dirname(__DIR__), '',__DIR__ ));
+
 (new yii\web\Application($config))->run();
