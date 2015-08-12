@@ -21,6 +21,7 @@ use yii\web\Application;
 class ModuleManager extends Component implements BootstrapInterface
 {
     const CACHE_CONFIG_ID = 'ModuleManagerConfigs';
+    const CACHE_ENABLED = 'ModuleManagerEnabled';
 
     const DEFINITION_FILE = 'config.php';
 
@@ -100,7 +101,17 @@ class ModuleManager extends Component implements BootstrapInterface
             return;
         }
 
-        $this->enabledModules = ModuleDefinition::getEnabledIds();
+        $this->enabledModules = self::getEnabledIds();
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getEnabledIds()
+    {
+        $ids = Yii::$app->cache->get(self::CACHE_ENABLED);
+
+        return $ids ? $ids : [];
     }
 
     /**

@@ -15,8 +15,6 @@ class ModuleDefinition extends Model
 {
     const PACKAGE_CORE = 'core';
 
-    const CACHE_ENABLED = 'ModuleDefinitionEnabled';
-
     public $id;
     public $class;
     public $config = [];
@@ -125,16 +123,6 @@ class ModuleDefinition extends Model
         }
 
         return $moduleConfig;
-    }
-
-    /**
-     * @return mixed
-     */
-    public static function getEnabledIds()
-    {
-        $ids = Yii::$app->cache->get(self::CACHE_ENABLED);
-
-        return $ids ? $ids : [];
     }
 
     public function isCore()
