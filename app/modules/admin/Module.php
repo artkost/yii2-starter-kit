@@ -5,9 +5,12 @@ namespace app\modules\admin;
 use app\base\ModuleParamTrait;
 use app\base\TranslatableTrait;
 use Yii;
+use yii\base\BootstrapInterface;
+use yii\base\InvalidConfigException;
 use yii\base\Module as BaseModule;
+use yii\console\Application as ConsoleApplication;
 
-class Module extends BaseModule
+class Module extends BaseModule implements BootstrapInterface
 {
     const PARAM_ROOT = 'admin';
     const TRANSLATE_CATEGORY = 'admin';
@@ -17,13 +20,37 @@ class Module extends BaseModule
 
     protected static $menu;
 
-    public function init()
+    /**
+     * @inheritdoc
+     */
+    public function bootstrap($app)
     {
-        parent::init();
+        if ($app instanceof ConsoleApplication) {
 
-        $this->set('definitionManager', [
-            'class' => DefinitionManager::className()
-        ]);
+        } else {
+            if ($app->id = 'admin') {
+                // Add module URL rules.
+                $app->getUrlManager()->addRules(
+                    [
+                        '' => 'admin/default/index',
+                        '<_m>/<_c>/<_a>' => '<_m>/<_c>/<_a>'
+                    ]
+                );
+            }
+        }
+
+        $app->i18n->translations[Module::TRANSLATE_CATEGORY . '/*'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => '@app/modules/admin/messages',
+            'forceTranslation' => true,
+            'fileMap' => [
+                'admin/admin' => 'admin.php',
+            ]
+        ];
+
+        if (!$app->has('cache')) {
+            throw new InvalidConfigException('Cache component not found, please configure');
+        }
     }
 
     /**
@@ -34,7 +61,7 @@ class Module extends BaseModule
         if (self::$menu == null) {
             self::$menu = Yii::createObject([
                 'class' => MenuCollection::className(),
-                'definitions' => $this->get('definitionManager')->getModulesDefinitions()
+                'definitions' => Yii::$app->get('moduleManager')->getEnabledModules()
             ]);
         }
 

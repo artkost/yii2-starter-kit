@@ -1,9 +1,16 @@
 <?php
 
-use app\modules\admin\models\ModuleDefinition;
+use app\models\ModuleDefinition;
 use app\modules\admin\Module;
 
 return [
+    'id' => 'admin',
+    'class' => Module::className(),
+
+    'config' => [
+        //set module config, like it loaded from default config
+    ],
+
     'name' => Module::t('info', 'Administration'),
     'package' => ModuleDefinition::PACKAGE_CORE,
     'category' => Module::TRANSLATE_CATEGORY,

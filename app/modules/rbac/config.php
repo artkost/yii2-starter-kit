@@ -1,9 +1,15 @@
 <?php
 
-use app\modules\admin\models\ModuleDefinition;
+use app\models\ModuleDefinition;
 use app\modules\rbac\Module;
 
 return [
+    'id' => 'rbac',
+    'class' => Module::className(),
+    'config' => [
+        //set module config, like it loaded from default config
+    ],
+
     'name' => 'Role Based Access Rights',
     'package' => ModuleDefinition::PACKAGE_CORE,
     'category' => Module::TRANSLATE_CATEGORY,

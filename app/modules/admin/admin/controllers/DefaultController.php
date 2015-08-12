@@ -2,9 +2,10 @@
 
 namespace app\modules\admin\admin\controllers;
 
+use app\base\ModuleManager;
 use app\modules\admin\components\Controller;
 use app\modules\admin\DefinitionManager;
-use app\modules\admin\models\ModuleDefinition;
+use app\models\ModuleDefinition;
 use Yii;
 
 class DefaultController extends Controller
@@ -63,16 +64,16 @@ class DefaultController extends Controller
     public function actionModules()
     {
         $request = Yii::$app->request;
-        /** @var DefinitionManager $dm */
-        $dm = $this->module->get('definitionManager');
+        /** @var ModuleManager $dm */
+        $dm = Yii::$app->get('moduleManager');
 
         if ($request->get('refresh', false)) {
-            $dm->refreshDefinitions();
+            $dm->flushConfigs();
             $this->redirect(['modules']);
         }
 
         /** @var ModuleDefinition[] $definitions */
-        $definitions = $dm->getModulesDefinitions();
+        $definitions = $dm->getModules();
 
         $modules = [];
         foreach ($definitions as $definition) {

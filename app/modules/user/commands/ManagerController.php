@@ -62,16 +62,16 @@ class ManagerController extends Controller
         $authKey = Yii::$app->security->generateRandomString();
         $secureKey = Security::generateExpiringRandomString();
 
-        return Yii::$app->db->createCommand()->insert(User::tableName(), [
+        return (new User([
             'username' => $username,
             'email' => $email,
-            'password_hash' => $passwordHash,
-            'auth_key' => $authKey,
-            'secure_key' => $secureKey,
-            'status_id' => User::STATUS_ACTIVE,
-            'created_at' => $time,
-            'updated_at' => $time
-        ])->execute();
+            'password' => $password,
+//            'auth_key' => $authKey,
+//            'secure_key' => $secureKey,
+//            'status_id' => User::STATUS_ACTIVE,
+//            'created_at' => $time,
+//            'updated_at' => $time
+        ]))->activateAndSave();
     }
 
     /**

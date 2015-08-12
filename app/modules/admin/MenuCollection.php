@@ -2,7 +2,7 @@
 
 namespace app\modules\admin;
 
-use app\modules\admin\models\ModuleDefinition;
+use app\models\ModuleDefinition;
 use yii\base\Object;
 use yii\helpers\ArrayHelper;
 

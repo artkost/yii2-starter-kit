@@ -1,8 +1,17 @@
 <?php
 
-use app\modules\admin\models\ModuleDefinition;
+use app\models\ModuleDefinition;
+use app\modules\user\Module;
 
 return [
+    'id' => 'user',
+    'class' => Module::className(),
+    'config' => [
+        //set module config, like it loaded from default config
+    ],
+
+    'weight' => 123,
+
     'name' => 'User Managment',
     'package' => ModuleDefinition::PACKAGE_CORE,
     'required' => true,

@@ -1,9 +1,15 @@
 <?php
 
-use app\modules\admin\models\ModuleDefinition;
-use app\modules\rbac\Module;
+use app\models\ModuleDefinition;
+use app\modules\news\Module;
 
 return [
+    'id' => 'news',
+    'class' => Module::className(),
+    'config' => [
+        //set module config, like it loaded from default config
+    ],
+
     'name' => 'News',
     'package' => ModuleDefinition::PACKAGE_CORE,
     'category' => Module::TRANSLATE_CATEGORY,

@@ -7,10 +7,11 @@ use app\base\TranslatableTrait;
 use app\modules\rbac\models\RbacDefinition;
 use app\modules\rbac\rules\UserRoleRule;
 use Yii;
+use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
 use yii\rbac\Rule;
 
-class Module extends \yii\base\Module
+class Module extends \yii\base\Module implements BootstrapInterface
 {
     const PARAM_ROOT = 'rbac';
     const TRANSLATE_CATEGORY = 'rbac';
@@ -37,6 +38,21 @@ class Module extends \yii\base\Module
      * @var array
      */
     protected $definitions = [];
+
+    /**
+     * @inheritdoc
+     */
+    public function bootstrap($app)
+    {
+        $app->i18n->translations[Module::TRANSLATE_CATEGORY . '/*'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => '@app/modules/rbac/messages',
+            'forceTranslation' => true,
+            'fileMap' => [
+                'rbac/rbac' => 'rbac.php',
+            ]
+        ];
+    }
 
     public function init()
     {

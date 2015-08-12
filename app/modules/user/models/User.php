@@ -17,7 +17,6 @@ use yii\rbac\DbManager;
  * @property string $repassword Repeat password
  *
  * @property DbManager $auth
- *
  */
 class User extends UserBase
 {
@@ -143,7 +142,10 @@ class User extends UserBase
         }
     }
 
-    public function getAuth()
+    /**
+     * @return \yii\rbac\ManagerInterface
+     */
+    public static function getAuth()
     {
         return Yii::$app->authManager;
     }
@@ -172,8 +174,6 @@ class User extends UserBase
         if ($insert) {
             $this->saveProfile();
             $this->assignDefaultRole();
-
-            // Module::sendSignUpEmail($this);
         }
     }
 
@@ -195,12 +195,12 @@ class User extends UserBase
 
     public function assignDefaultRole($role = self::ROLE_DEFAULT)
     {
-        return $this->getAuth()->assign($this->getAuth()->getRole($role), $this->id);
+        return self::getAuth()->assign(self::getAuth()->getRole($role), $this->id);
     }
 
     public function revokeDefaultRole($role = self::ROLE_DEFAULT)
     {
-        return $this->getAuth()->revoke($this->getAuth()->getRole($role), $this->id);
+        return self::getAuth()->revoke(self::getAuth()->getRole($role), $this->id);
     }
 
 }

@@ -5,9 +5,10 @@ namespace app\modules\user;
 use app\base\ModuleParamTrait;
 use app\base\TranslatableTrait;
 use Yii;
+use yii\base\BootstrapInterface;
 use yii\base\Model;
 
-class Module extends \yii\base\Module
+class Module extends \yii\base\Module implements BootstrapInterface
 {
     const PARAM_ROOT = 'user';
     const TRANSLATE_CATEGORY = 'user';
@@ -44,6 +45,26 @@ class Module extends \yii\base\Module
     public $recordsPerPage = 10;
 
     public $avatarDefaultUrl = '';
+
+    /**
+     * @inheritdoc
+     */
+    public function bootstrap($app)
+    {
+        // Add module I18N category.
+        $app->i18n->translations[Module::TRANSLATE_CATEGORY . '/*'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'basePath' => __DIR__ . '/messages',
+            'fileMap' => [
+                'user/users' => 'users.php',
+                'user/user' => 'user.php',
+                'user/admin' => 'admin.php',
+                'user/mail' => 'mail.php',
+                'user/model' => 'model.php',
+                'user/console' => 'console.php'
+            ]
+        ];
+    }
 
     public static function sendSignUpEmail(Model $model)
     {

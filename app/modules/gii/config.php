@@ -1,8 +1,15 @@
 <?php
 
-use app\modules\admin\models\ModuleDefinition;
+use app\models\ModuleDefinition;
+use app\modules\gii\Module;
 
 return [
+    'id' => 'gii',
+    'class' => Module::className(),
+    'config' => [
+        //set module config, like it loaded from default config
+    ],
+
     'name' => 'Code Generation',
     'package' => ModuleDefinition::PACKAGE_CORE,
     'required' => false,
