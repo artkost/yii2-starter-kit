@@ -4,7 +4,6 @@
  * Blog update view.
  *
  * @var yii\base\View $this View
- * @var vova07\blogs\models\backend\Blog $model Model
  * @var \app\themes\admin\widgets\Box $box Box widget instance
  * @var array $statusArray Statuses array
  */

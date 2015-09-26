@@ -26,39 +26,25 @@ $this->params['breadcrumbs'] = [$this->title];
                 ]
             ); ?>
 
-            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                <?php foreach($permissions as $module => $definition): ?>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="heading<?= md5($module) ?>">
-                            <h4 class="panel-title">
-                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?= md5($module) ?>" aria-expanded="false" aria-controls="collapse<?= md5($module) ?>">
-                                    <?= $module ?>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapse<?= md5($module) ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="<?= $module ?>">
-                            <div class="panel-body no-padding">
-                                <table class="table table-striped">
-                                    <tbody>
-                                    <tr>
-                                        <th style="width: 10px">#</th>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                    </tr>
-                                    <?php foreach($definition->permissions as $name => $description): ?>
-                                        <tr>
-                                            <td>#</td>
-                                            <td><?= $name ?></td>
-                                            <td><?= $description ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                    <?php foreach($permissions as $module => $definition): ?>
+                        <tr>
+                            <td colspan="2"><?= $module ?></td>
+                        </tr>
+                        <?php foreach($definition->permissions as $name => $description): ?>
+                            <tr>
+                                <td><?= $description ?></td>
+                                <td>Role1 Role2</td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
             <?php Box::end(); ?>
         </div>
     </div>

@@ -10,11 +10,8 @@
  */
 
 use app\modules\page\Module;
-use app\modules\attachment\widgets\FileAPI as FileAPIWidget;
-use vova07\imperavi\Widget as ImperaviWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\jui\DatePicker;
 use yii\widgets\ActiveForm;
 
 ?>

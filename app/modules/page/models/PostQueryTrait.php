@@ -4,7 +4,6 @@ namespace app\modules\page\models;
 
 /**
  * Class BlogQuery
- * @package vova07\blog\models
  */
 trait PostQueryTrait
 {

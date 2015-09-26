@@ -8,6 +8,7 @@ use app\modules\user\Module;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -89,6 +90,7 @@ class UserBase extends ActiveRecord implements IdentityInterface
                 $query->$scope();
             }
         }
+
         return $query->all();
     }
 
@@ -111,16 +113,8 @@ class UserBase extends ActiveRecord implements IdentityInterface
     public static function findByUsername($username, $scope = null)
     {
         $query = static::find()->where(['username' => $username]);
-        if ($scope !== null) {
-            if (is_array($scope)) {
-                foreach ($scope as $value) {
-                    $query->$value();
-                }
-            } else {
-                $query->$scope();
-            }
-        }
-        return $query->one();
+
+        return static::applyScope($query, $scope)->one();
     }
 
     /**
@@ -134,16 +128,8 @@ class UserBase extends ActiveRecord implements IdentityInterface
     public static function findByEmail($email, $scope = null)
     {
         $query = static::find()->where(['email' => $email]);
-        if ($scope !== null) {
-            if (is_array($scope)) {
-                foreach ($scope as $value) {
-                    $query->$value();
-                }
-            } else {
-                $query->$scope();
-            }
-        }
-        return $query->one();
+
+        return static::applyScope($query, $scope)->one();
     }
 
     /**
@@ -157,6 +143,17 @@ class UserBase extends ActiveRecord implements IdentityInterface
     public static function findByToken($token, $scope = null)
     {
         $query = static::find()->where(['secure_key' => $token]);
+
+        return static::applyScope($query, $scope)->one();
+    }
+
+    /**
+     * @param $query
+     * @param null $scope
+     * @return ActiveQuery
+     */
+    public static function applyScope($query, $scope = null)
+    {
         if ($scope !== null) {
             if (is_array($scope)) {
                 foreach ($scope as $value) {
@@ -166,7 +163,8 @@ class UserBase extends ActiveRecord implements IdentityInterface
                 $query->$scope();
             }
         }
-        return $query->one();
+
+        return $query;
     }
 
     /**
@@ -300,6 +298,7 @@ class UserBase extends ActiveRecord implements IdentityInterface
         if (!$this->status_id) {
             $this->status_id = $status;
         }
+
         return $this;
     }
 
@@ -312,6 +311,7 @@ class UserBase extends ActiveRecord implements IdentityInterface
     public function setPassword($password)
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+
         return $this;
     }
 
@@ -321,6 +321,7 @@ class UserBase extends ActiveRecord implements IdentityInterface
     public function generateAuthKey()
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
+
         return $this;
     }
 
@@ -330,6 +331,7 @@ class UserBase extends ActiveRecord implements IdentityInterface
     public function generateToken()
     {
         $this->secure_key = Security::generateExpiringRandomString();
+
         return $this;
     }
 
@@ -342,9 +344,7 @@ class UserBase extends ActiveRecord implements IdentityInterface
     {
         $this->status_id = self::STATUS_ACTIVE;
 
-        return $this
-            ->generateToken()
-            ->save(false);
+        return $this->generateToken()->save(false);
     }
 
     /**
@@ -356,10 +356,7 @@ class UserBase extends ActiveRecord implements IdentityInterface
      */
     public function recoveryAndSave($password)
     {
-        return $this
-            ->setPassword($password)
-            ->generateToken()
-            ->save(false);
+        return $this->setPassword($password)->generateToken()->save(false);
     }
 
     /**
@@ -371,8 +368,6 @@ class UserBase extends ActiveRecord implements IdentityInterface
      */
     public function changePasswordAndSave($password)
     {
-        return $this
-            ->setPassword($password)
-            ->save(false);
+        return $this->setPassword($password)->save(false);
     }
 }

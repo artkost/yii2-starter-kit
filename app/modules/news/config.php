@@ -15,6 +15,12 @@ return [
     'category' => Module::TRANSLATE_CATEGORY,
     'required' => false,
 
+    'urlRules' => [
+        'news' => 'news/default/index',
+        'news/tag/<name>' => 'news/default/tag',
+        'news/<url>' => 'news/default/view',
+    ],
+
     'dependencies' => [
         'page'
     ],

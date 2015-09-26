@@ -81,14 +81,14 @@ $profile = $identity->profile ? $identity->profile : false;
     <!-- /.content-wrapper -->
 
     <!-- Main Footer -->
-    <footer class="main-footer">
+    <?/*<footer class="main-footer">
         <!-- To the right -->
         <div class="pull-right hidden-xs">
             Anything you want
         </div>
         <!-- Default to the left -->
         <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
-    </footer>
+    </footer>*/?>
 
     <!-- Control Sidebar -->
     <aside class="control-sidebar control-sidebar-dark">
@@ -104,7 +104,7 @@ $profile = $identity->profile ? $identity->profile : false;
                 <h3 class="control-sidebar-heading">Recent Activity</h3>
                 <ul class='control-sidebar-menu'>
                     <li>
-                        <a href='javascript::;'>
+                        <a href='#'>
                             <i class="menu-icon fa fa-birthday-cake bg-red"></i>
 
                             <div class="menu-info">

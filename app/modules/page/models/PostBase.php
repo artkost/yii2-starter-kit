@@ -2,8 +2,8 @@
 
 namespace app\modules\page\models;
 
-use app\components\behaviors\Purifier;
-use app\components\helpers\Security;
+use app\base\behaviors\PurifierBehavior;
+use app\base\helpers\Security;
 use app\modules\page\Module;
 use Yii;
 use yii\base\ErrorException;
@@ -15,7 +15,6 @@ use yii\helpers\Json;
 
 /**
  * Class Blog
- * @package vova07\blogs\models
  * Blog model.
  *
  * @property integer $id ID
@@ -86,7 +85,7 @@ abstract class PostBase extends ActiveRecord
                 'slugAttribute' => 'alias'
             ],
             'purifierBehavior' => [
-                'class' => Purifier::className(),
+                'class' => PurifierBehavior::className(),
                 'attributes' => [
                     self::EVENT_BEFORE_VALIDATE => [
                         'snippet',
@@ -143,9 +142,9 @@ abstract class PostBase extends ActiveRecord
     public static function statusLabels()
     {
         return [
-            self::STATUS_UNPUBLISHED => Module::t('page', 'STATUS_UNPUBLISHED'),
-            self::STATUS_PUBLISHED => Module::t('page', 'STATUS_PUBLISHED'),
-            self::STATUS_STICKY => Module::t('page', 'STATUS_STICKY')
+            self::STATUS_UNPUBLISHED => Module::t('page', 'Unpublished'),
+            self::STATUS_PUBLISHED => Module::t('page', 'Published'),
+            self::STATUS_STICKY => Module::t('page', 'Sticky')
         ];
     }
 
@@ -155,16 +154,16 @@ abstract class PostBase extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Module::t('page', 'ATTR_ID'),
-            'title' => Module::t('page', 'ATTR_TITLE'),
-            'alias' => Module::t('page', 'ATTR_ALIAS'),
-            'snippet' => Module::t('page', 'ATTR_SNIPPET'),
-            'content' => Module::t('page', 'ATTR_CONTENT'),
-            'views' => Module::t('page', 'ATTR_VIEWS'),
-            'status_id' => Module::t('page', 'ATTR_STATUS'),
-            'data' => Module::t('page', 'ATTR_STATUS'),
-            'created_at' => Module::t('page', 'ATTR_CREATED'),
-            'updated_at' => Module::t('page', 'ATTR_UPDATED'),
+            'id' => Module::t('page', 'Id'),
+            'title' => Module::t('page', 'Title'),
+            'alias' => Module::t('page', 'Alias'),
+            'teaser' => Module::t('page', 'Teaser'),
+            'content' => Module::t('page', 'Content'),
+            'views' => Module::t('page', 'Views'),
+            'status_id' => Module::t('page', 'Status Id'),
+            'data' => Module::t('page', 'Data'),
+            'created_at' => Module::t('page', 'Created at'),
+            'updated_at' => Module::t('page', 'Updated at'),
         ];
     }
 
