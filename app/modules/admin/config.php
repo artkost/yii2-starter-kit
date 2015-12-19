@@ -12,9 +12,11 @@ return [
     ],
 
     'name' => Module::t('info', 'Administration'),
+    'description' => Module::t('info', 'Administration Panel Module'),
     'package' => ModuleDefinition::PACKAGE_CORE,
     'category' => Module::TRANSLATE_CATEGORY,
     'required' => true,
+    'version' => '1.0',
 
     'configure' => ['/admin/system/settings'],
 
@@ -31,7 +33,7 @@ return [
         ],
         'admin.modules' => [
             'title' => Module::t('info', 'Modules'),
-            'route' => ['/admin/default/modules'],
+            'route' => ['/admin/modules/index'],
             'parent' => 'admin.index'
         ],
         'admin.preview' => [

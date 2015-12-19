@@ -3,7 +3,6 @@
 $params = require(__DIR__ . '/params.php');
 $aliases = require(__DIR__ . '/aliases.php');
 $db = require(__DIR__ . '/db.php');
-$redis = require(__DIR__ . '/redis.php');
 
 return [
     'aliases' => $aliases,
@@ -42,7 +41,6 @@ return [
                 ],
             ],
         ],
-
         'mail' => [
             'class' => 'app\base\Mailer',
             'useFileTransport' => true,
@@ -56,9 +54,7 @@ return [
                 ],
             ],
         ],
-        'db' => $db,
-        'redis' => $redis,
+        'db' => $db
     ],
     'params' => $params,
-
 ];

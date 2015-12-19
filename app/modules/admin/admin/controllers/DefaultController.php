@@ -2,10 +2,7 @@
 
 namespace app\modules\admin\admin\controllers;
 
-use app\base\ModuleManager;
 use app\modules\admin\components\Controller;
-use app\modules\admin\DefinitionManager;
-use app\models\ModuleDefinition;
 use Yii;
 
 class DefaultController extends Controller
@@ -59,35 +56,5 @@ class DefaultController extends Controller
     public function actionPreview()
     {
         return $this->render('preview');
-    }
-
-    public function actionModules()
-    {
-        $request = Yii::$app->request;
-        /** @var ModuleManager $dm */
-        $dm = Yii::$app->get('moduleManager');
-
-        if ($request->get('refresh', false)) {
-            $dm->flushConfigs();
-            $this->redirect(['modules']);
-        }
-
-        /** @var ModuleDefinition[] $definitions */
-        $definitions = $dm->getModules();
-
-        $modules = [];
-        foreach ($definitions as $definition) {
-
-            if (!isset($modules[$definition->package])) {
-                $modules[$definition->package] = [];
-            }
-
-            $modules[$definition->package][] = [
-                'name' => $definition->name,
-                'required' => $definition->required
-            ];
-        }
-
-        return $this->render('modules', compact('modules'));
     }
 }

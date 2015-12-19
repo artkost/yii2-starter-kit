@@ -10,7 +10,7 @@ return [
         //set module config, like it loaded from default config
     ],
 
-    'name' => 'Role Based Access Rights',
+    'name' => 'Access Rights',
     'package' => ModuleDefinition::PACKAGE_CORE,
     'category' => Module::TRANSLATE_CATEGORY,
     'required' => true,

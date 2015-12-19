@@ -10,7 +10,7 @@ return [
         //set module config, like it loaded from default config
     ],
 
-    'name' => 'Comments System',
+    'name' => 'Comments',
     'package' => ModuleDefinition::PACKAGE_CORE,
     'category' => Module::TRANSLATE_CATEGORY,
     'required' => false,

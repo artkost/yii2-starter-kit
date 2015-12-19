@@ -3,7 +3,7 @@
 namespace app\modules\user\models;
 
 use app\modules\user\Module;
-use app\base\helpers\Security;
+use app\base\helpers\SecurityHelper;
 use yii\db\ActiveRecord;
 use Yii;
 
@@ -55,7 +55,7 @@ class UserEmail extends ActiveRecord
      */
     public function generateToken()
     {
-        $this->token = Security::generateExpiringRandomString();
+        $this->token = SecurityHelper::generateExpiringRandomString();
     }
 
     /**
@@ -65,7 +65,7 @@ class UserEmail extends ActiveRecord
      */
     public function isValidToken()
     {
-    	if (Security::isValidToken($this->token, Module::param('emailWithin', 14400)) === true) {
+    	if (SecurityHelper::isValidToken($this->token, Module::param('emailWithin', 14400)) === true) {
     		return ($this->_model = static::findOne(['token' => $this->token])) !== null;
     	}
     	return false;

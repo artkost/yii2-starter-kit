@@ -2,7 +2,7 @@
 
 namespace app\modules\user\models;
 
-use app\base\helpers\Security;
+use app\base\helpers\SecurityHelper;
 use app\modules\user\models\query\UserQuery;
 use app\modules\user\Module;
 use Yii;
@@ -330,7 +330,7 @@ class UserBase extends ActiveRecord implements IdentityInterface
      */
     public function generateToken()
     {
-        $this->secure_key = Security::generateExpiringRandomString();
+        $this->secure_key = SecurityHelper::generateExpiringRandomString();
 
         return $this;
     }

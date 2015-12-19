@@ -23,8 +23,9 @@ $admin = [
 $merged = ArrayHelper::merge($web, $admin);
 $merged['components']['urlManager']['rules'] = [];
 
-$merged['bootstrap'] = [];
-$merged['bootstrap'][] = ['class' => '\app\themes\admin\Theme'];
+$merged['bootstrap'] = [
+    ['class' => '\app\themes\admin\Theme']
+];
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment

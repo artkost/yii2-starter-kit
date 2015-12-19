@@ -2,7 +2,7 @@
 
 namespace app\modules\user\forms;
 
-use app\base\helpers\Security;
+use app\base\helpers\SecurityHelper;
 use app\modules\user\Module;
 use app\modules\user\models\User;
 use yii\base\Model;
@@ -81,7 +81,7 @@ class RecoveryConfirmation extends Model
      */
     public function isValidToken()
     {
-        if (Security::isValidToken($this->token, Module::param('recoveryWithin', false)) === true) {
+        if (SecurityHelper::isValidToken($this->token, Module::param('recoveryWithin', false)) === true) {
             return ($this->_user = User::findByToken($this->token, 'active')) !== null;
         }
         return false;

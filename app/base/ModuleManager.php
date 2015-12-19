@@ -51,13 +51,10 @@ class ModuleManager extends Component implements BootstrapInterface
 
         if ($configs === false) {
             $configs = [];
-            $paths = ArrayHelper::getValue(Yii::$app->params, 'modules.path', ['@app/modules']);
 
-            foreach ($paths as $alias) {
+            foreach ($this->getPaths() as $alias) {
                 $path = Yii::getAlias($alias);
-                $files = FileHelper::findFiles($path, [
-                    'only' => ['*/' . self::DEFINITION_FILE]
-                ]);
+                $files = FileHelper::findFiles($path, ['only' => ['*/' . self::DEFINITION_FILE]]);
 
                 foreach ($files as $file) {
                     try {
@@ -103,7 +100,7 @@ class ModuleManager extends Component implements BootstrapInterface
     }
 
     /**
-     * @return mixed
+     * @return array
      */
     public static function getEnabledIds()
     {
@@ -148,29 +145,42 @@ class ModuleManager extends Component implements BootstrapInterface
             return;
         }
 
-        $this->modules[$id] = new ModuleDefinition($config);
+        $definition = new ModuleDefinition($config);
 
-        if ($this->modules[$id]->required) {
+        if ($definition->required) {
             $this->enabledModules[] = $id;
         }
 
         // Not enabled and not core module
-        if (!$this->modules[$id]->isCore() && !in_array($id, $this->enabledModules)) {
+        if (!$definition->isCore() && !in_array($id, $this->enabledModules)) {
             return;
         }
 
-        if ($this->modules[$id]->isCore()) {
-            $this->coreModules[$id] = $this->modules[$id];
+        if ($definition->isCore()) {
+            $this->coreModules[$id] = $definition;
         }
 
-        $this->modules[$id]->register();
+        $definition->register();
+
+        $this->modules[$id] = $definition;
     }
 
+    public function getPaths()
+    {
+        return ArrayHelper::getValue(Yii::$app->params, 'modules.path', ['@app/modules']);
+    }
+
+    /**
+     * @return ModuleDefinition[]
+     */
     public function getModules()
     {
         return $this->modules;
     }
 
+    /**
+     * @return array
+     */
     public function getEnabledModules()
     {
         return array_filter($this->modules, [$this, 'filterEnabled']);

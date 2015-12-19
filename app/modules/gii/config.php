@@ -10,7 +10,7 @@ return [
         //set module config, like it loaded from default config
     ],
 
-    'name' => 'Code Generation',
+    'name' => 'Code Generator',
     'package' => ModuleDefinition::PACKAGE_CORE,
     'required' => false,
 

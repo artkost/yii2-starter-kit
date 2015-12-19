@@ -10,7 +10,7 @@ return [
         //set module config, like it loaded from default config
     ],
 
-    'name' => 'Pages Content',
+    'name' => 'Pages',
     'package' => ModuleDefinition::PACKAGE_CORE,
     'category' => Module::TRANSLATE_CATEGORY,
     'required' => false,

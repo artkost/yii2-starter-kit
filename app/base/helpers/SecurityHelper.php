@@ -4,7 +4,7 @@ namespace app\base\helpers;
 
 use Yii;
 
-class Security
+class SecurityHelper
 {
     /**
      * Generate a random key with time suffix.

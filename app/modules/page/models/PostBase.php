@@ -3,7 +3,7 @@
 namespace app\modules\page\models;
 
 use app\base\behaviors\PurifierBehavior;
-use app\base\helpers\Security;
+use app\base\helpers\SecurityHelper;
 use app\modules\page\Module;
 use Yii;
 use yii\base\ErrorException;
@@ -390,7 +390,7 @@ abstract class PostBase extends ActiveRecord
     public function beforeValidate()
     {
         if (parent::beforeValidate()) {
-            $this->model_class = Security::crc32(static::className());
+            $this->model_class = SecurityHelper::crc32(static::className());
 
             return true;
         }

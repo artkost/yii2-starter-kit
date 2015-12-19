@@ -54,13 +54,7 @@ class DefinitionManager extends Component
     {
         $module = Yii::$app->getModule($id);
 
-        if (isset($module->rbac) && is_array($module->rbac)) {
-            $definition = $module->rbac;
-        } else {
-            $definition = $module->getBasePath() . DIRECTORY_SEPARATOR . self::DEFINITION_FILE;
-        }
-
-        return $definition;
+        return $module->getBasePath() . DIRECTORY_SEPARATOR . self::DEFINITION_FILE;
     }
 
     /**
