@@ -26,21 +26,6 @@ class Controller extends BaseController
         ];
     }
 
-    public function beforeAction($action)
-    {
-        $user = Yii::$app->user;
-
-        if (parent::beforeAction($action)) {
-            if ($user->isGuest) {
-                $user->loginRequired();
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
     public function getModule()
     {
         return Yii::$app->getModule('admin');

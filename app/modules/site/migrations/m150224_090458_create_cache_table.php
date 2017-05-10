@@ -8,7 +8,7 @@ use yii\db\Schema;
  * Create module tables.
  *
  * Will be created 1 table:
- * - `{{%cache}}` - Comments table.
+ * - `{{%cache}}` - default cache table.
  */
 class m150224_090458_create_cache_table extends Migration
 {
@@ -24,9 +24,9 @@ class m150224_090458_create_cache_table extends Migration
 
         // Comment models table
         $this->createTable($this->cacheTable, [
-            'id' => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL PRIMARY KEY',
-            'expire' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'data' => 'BLOB'
+            'id' => $this->primaryKey(),
+            'expire' => $this->integer()->notNull(),
+            'data' => $this->binary()
         ], $tableOptions);
 
     }

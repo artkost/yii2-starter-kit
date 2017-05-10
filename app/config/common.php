@@ -2,9 +2,8 @@
 
 $params = require(__DIR__ . '/params.php');
 $aliases = require(__DIR__ . '/aliases.php');
-$db = require(__DIR__ . '/db.php');
 
-return [
+$config = [
     'aliases' => $aliases,
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
@@ -18,21 +17,6 @@ return [
         ],
         'moduleManager' => [
             'class' => '\app\base\ModuleManager',
-        ],
-        'attachmentManager' => [
-            'class' => 'artkost\attachment\Manager',
-            'storageUrl' => '@web/storage',
-            'storagePath' => '@webroot/storage',
-            'attachmentFileTable' => '{{%attachment_file}}'
-        ],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-            'itemTable' => '{{%rbac_item}}',
-            'itemChildTable' => '{{%rbac_item_child}}',
-            'assignmentTable' => '{{%rbac_assignment}}',
-            'ruleTable' => '{{%rbac_rule}}',
-            'defaultRoles' => ['guest'],
-            'cache' => 'cache'
         ],
         'i18n' => [
             'translations' => [
@@ -54,7 +38,12 @@ return [
                 ],
             ],
         ],
-        'db' => $db
     ],
     'params' => $params,
 ];
+
+if (file_exists(__DIR__ . '/db.php')) {
+    $config['components']['db'] = require(__DIR__ . '/db.php');
+}
+
+return $config;

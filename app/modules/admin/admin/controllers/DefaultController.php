@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\admin\controllers;
 
+use app\base\ModuleManager;
 use app\modules\admin\components\Controller;
 use Yii;
 
@@ -14,26 +15,15 @@ class DefaultController extends Controller
     {
         $behaviors = parent::behaviors();
 
-        $behaviors['access']['rules'][] = [
-            'allow' => true,
-            'actions' => ['error'],
-            'roles' => ['?']
-        ];
-
-        return $behaviors;
-    }
-
-    public function beforeAction($action)
-    {
-        if (parent::beforeAction($action)) {
-            if ($action->id == 'error' && Yii::$app->user->isGuest) {
-                $this->layout = '//guest';
-            }
-
-            return true;
+        if (isset($behaviors['access'])) {
+            array_unshift($behaviors['access']['rules'], [
+                'allow' => true,
+                'roles' => ['?'],
+                'actions' => ['error']
+            ]);
         }
 
-        return false;
+        return $behaviors;
     }
 
     /**
@@ -46,6 +36,19 @@ class DefaultController extends Controller
                 'class' => 'yii\web\ErrorAction'
             ]
         ];
+    }
+
+    public function beforeAction($action)
+    {
+        $user = Yii::$app->get('user');
+
+        if ($action->id == 'error') {
+            if ($user->isGuest) {
+                $this->layout = '//guest';
+            }
+        }
+
+        return parent::beforeAction($action);
     }
 
     public function actionIndex()

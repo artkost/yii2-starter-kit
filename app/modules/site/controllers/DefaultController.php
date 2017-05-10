@@ -1,8 +1,9 @@
 <?php
 
-namespace app\modules\site\controllers;
+namespace app\modules\site\admin\controllers;
 
 use app\web\Controller;
+use yii\web\HttpException;
 
 class DefaultController extends Controller
 {
@@ -22,5 +23,10 @@ class DefaultController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+    }
+
+    public function actionLogin()
+    {
+        throw new HttpException('Login action is not implemented');
     }
 }

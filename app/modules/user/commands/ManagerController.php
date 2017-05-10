@@ -15,6 +15,9 @@ use yii\helpers\Console;
 class ManagerController extends Controller
 {
 
+    /**
+     * Creates user and profile by asking questions
+     */
     public function actionCreate()
     {
         $username = $this->prompt(Module::t('console', 'Username:'));

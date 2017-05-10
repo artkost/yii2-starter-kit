@@ -16,7 +16,6 @@ class Module extends \yii\base\Module implements BootstrapInterface
     use ModuleParamTrait;
     use TranslatableTrait;
 
-
     /**
      * @inheritdoc
      */
@@ -24,7 +23,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         $app->i18n->translations[Module::TRANSLATE_CATEGORY . '/*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@app/modules/admin/messages',
+            'basePath' => '@app/modules/installer/messages',
             'forceTranslation' => true,
             'fileMap' => [
                 'installer/installer' => 'installer.php',
@@ -38,7 +37,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public function beforeAction($action)
     {
         // Block installer, when it's marked as installed
-        if (Yii::$app->params['installed']) {
+        if (Yii::$app->params['modules.installed']) {
             throw new HttpException(500, 'Application is already installed!');
         }
 

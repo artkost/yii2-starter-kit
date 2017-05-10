@@ -10,13 +10,15 @@ class UserRoleRule extends Rule
 
     public function execute($user, $item, $params)
     {
-        $manager = Yii::$app->authManager;
+        $manager = Yii::$app->getAuthManager();
 
         if ($user) {
             $roles = $manager->getRolesByUser($user);
 
             foreach ($roles as $role) {
-                if ($role->name == $item->name) return true;
+                if ($role->name == $item->name) {
+                    return true;
+                }
             }
         }
 

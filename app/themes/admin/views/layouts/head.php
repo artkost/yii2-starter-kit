@@ -10,10 +10,10 @@ use yii\helpers\Url;
 
 ?>
 <title><?= Html::encode(Yii::$app->name . ' :: ' . $this->title); ?></title>
-<?= Html::csrfMetaTags(); ?>
-<?php $this->head(); ?>
-
 <?php
+echo Html::csrfMetaTags();
+
+$this->head();
 
 ThemeAsset::register($this);
 

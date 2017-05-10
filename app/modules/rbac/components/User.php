@@ -9,7 +9,7 @@ use yii\web\User as WebUser;
 
 class User extends WebUser
 {
-    public $superAdminRoleName = 'superAdmin';
+    const SUPER_ADMIN_ROLE = 'superAdmin';
 
     /**
      * Result of superAdminRole check
@@ -17,7 +17,11 @@ class User extends WebUser
      */
     protected $superAdminCheck;
 
-    protected $defaultRolesPermissions;
+    /**
+     * Set of permissions available for default roles
+     * @var
+     */
+    protected $defaultRolePermissions;
 
     /**
      * @inheritdoc
@@ -33,7 +37,7 @@ class User extends WebUser
         $auth = Yii::$app->getAuthManager();
 
         if (is_null($this->superAdminCheck)) {
-            $this->superAdminCheck = $auth->getAssignment($this->superAdminRoleName, $this->getId());
+            $this->superAdminCheck = $auth->getAssignment(self::SUPER_ADMIN_ROLE, $this->getId());
         }
 
         return (bool) $this->superAdminCheck;
@@ -41,17 +45,17 @@ class User extends WebUser
 
     protected function isGuestCan($permissionName)
     {
-        /** @var DbManager $auth */
-        $auth = Yii::$app->getAuthManager();
+        /** @var DbManager $authManager */
+        $authManager = Yii::$app->getAuthManager();
 
-        if ($this->defaultRolesPermissions == null) {
-            foreach ($auth->defaultRoles as $roleName) {
-                $this->defaultRolesPermissions[$roleName] = ArrayHelper::index($auth->getPermissionsByRole($roleName), 'name');
+        if ($this->defaultRolePermissions == null) {
+            foreach ($authManager->defaultRoles as $roleName) {
+                $this->defaultRolePermissions[$roleName] = ArrayHelper::index($authManager->getPermissionsByRole($roleName), 'name');
             }
         }
 
-        foreach ($auth->defaultRoles as $roleName) {
-            return isset($this->defaultRolesPermissions[$roleName][$permissionName]);
+        foreach ($authManager->defaultRoles as $roleName) {
+            return isset($this->defaultRolePermissions[$roleName][$permissionName]);
         }
 
         return false;

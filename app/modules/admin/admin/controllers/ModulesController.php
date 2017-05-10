@@ -13,7 +13,7 @@ class ModulesController extends Controller
     {
         $dm = $this->getModuleManager();
         /** @var ModuleDefinition[] $definitions */
-        $definitions = $dm->getModules();
+        $definitions = $dm->getModuleDefinitions();
 
         $modules = [];
 
@@ -33,7 +33,7 @@ class ModulesController extends Controller
 
     public function actionRefresh()
     {
-        $this->getModuleManager()->flushConfigs();
+        $this->getModuleManager()->flushCache();
         $this->goBack(['index']);
     }
 

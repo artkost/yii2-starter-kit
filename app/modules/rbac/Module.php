@@ -19,6 +19,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
     use ModuleParamTrait;
     use TranslatableTrait;
 
+    const DEFAULT_ROLES = ['guest'];
+
     const EVENT_RULE_ADD = 'ruleAdd';
     const EVENT_ROLE_ADD = 'roleAdd';
     const EVENT_PERMISSION_ADD = 'permissionAdd';
@@ -46,7 +48,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         $app->i18n->translations[Module::TRANSLATE_CATEGORY . '/*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@app/modules/rbac/messages',
+            'basePath' => __DIR__ . '/messages',
             'forceTranslation' => true,
             'fileMap' => [
                 'rbac/rbac' => 'rbac.php',

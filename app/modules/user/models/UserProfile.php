@@ -39,14 +39,15 @@ class UserProfile extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors[] = [
-            'class' => AttachBehavior::className(),
-            'models' => [
-                'avatar' => [
-                    'class' => UserAvatarFile::className()
-                ]
-            ]
-        ];
+//@TODO move to proper place,
+//        $behaviors[] = [
+//            'class' => AttachBehavior::className(),
+//            'models' => [
+//                'avatar' => [
+//                    'class' => UserAvatarFile::className()
+//                ]
+//            ]
+//        ];
 
         return $behaviors;
     }

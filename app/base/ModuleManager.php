@@ -12,71 +12,43 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 
 /**
+ * Core loader for application, loads modules same way as Yii
  * Manages and bootstraps modules
  * Class ModuleManager
  * @package app\modules\admin
  */
 class ModuleManager extends Component implements BootstrapInterface
 {
-    const CACHE_CONFIG_ID = 'ModuleManagerConfigs';
+    const CACHE_CONFIGS = 'ModuleManagerConfigs';
     const CACHE_ENABLED = 'ModuleManagerEnabled';
 
-    const DEFINITION_FILE = 'config.php';
+    const CONFIG_FILE = 'config.php';
+    const REQUIREMENTS_FILE = 'requirements.php';
 
     /**
      * List of all modules
      * This also contains installed but not enabled modules.
      *
-     * @param ModuleDefinition[] $config moduleId-class pairs
+     * @param ModuleDefinition[] $config moduleId => class pairs
      */
-    protected $modules;
+    protected $definitions;
 
     /**
      * List of all enabled module ids
      *
      * @var string[]
      */
-    protected $enabledModules = [];
-
-    /**
-     * List of core module classes.
-     *
-     * @var ModuleDefinition[] the core module class names
-     */
-    protected $coreModules = [];
+    protected $enabledIds = [];
 
     public function bootstrap($app)
     {
-        $configs = $app->cache->get(self::CACHE_CONFIG_ID);
+        $configs = $app->getCache()->get(self::CACHE_CONFIGS);
 
         if ($configs === false) {
-            $configs = [];
-
-            foreach ($this->getPaths() as $alias) {
-                $path = Yii::getAlias($alias);
-                $files = FileHelper::findFiles($path, ['only' => ['*/' . self::DEFINITION_FILE]]);
-
-                foreach ($files as $file) {
-                    try {
-                        $config = require($file);
-                        $config['basePath'] = dirname($file);
-                        $configs[] = $config;
-                    } catch (Exception $e) {
-                        Yii::trace("Failed loading module config.php file: {$e->getMessage()}", __METHOD__);
-                    }
-                }
-
-                usort($configs, function ($configA, $configB) {
-                    if (isset($configA['weight'], $configB['weight'])) {
-                        return (int) $configA['weight'] > (int) $configB['weight'];
-                    }
-
-                    return 0;
-                });
-            }
+            $configs = $this->getConfigFiles();
 
             if (!YII_DEBUG && !empty($configs)) {
-                $app->cache->set(self::CACHE_CONFIG_ID, $configs);
+                $app->getCache()->set(self::CACHE_CONFIGS, $configs);
             }
         }
 
@@ -84,25 +56,86 @@ class ModuleManager extends Component implements BootstrapInterface
     }
 
     /**
-     * Module Manager init
+     * Get paths array where to search modules
+     * @return array
+     */
+    public function getSearchPaths()
+    {
+        return ArrayHelper::getValue(Yii::$app->params, 'modules.path', ['@app/modules']);
+    }
+
+    /**
+     * Loads modules configs and sorts it by weight
+     * @return array
+     */
+    public function getConfigFiles()
+    {
+        $configs = [];
+
+        foreach ($this->getSearchPaths() as $alias) {
+            $path = Yii::getAlias($alias);
+            $files = FileHelper::findFiles($path, ['only' => ['*/' . self::CONFIG_FILE]]);
+
+            foreach ($files as $file) {
+                try {
+                    $config = require($file);
+                    $config['basePath'] = dirname($file);
+                    $configs[] = $config;
+                } catch (Exception $e) {
+                    Yii::trace("Failed loading module config.php file for {$file}: {$e->getMessage()}", __METHOD__);
+                }
+            }
+
+            usort($configs, function ($configA, $configB) {
+                if (isset($configA['weight'], $configB['weight'])) {
+                    return (int)$configA['weight'] > (int)$configB['weight'];
+                }
+
+                return 0;
+            });
+        }
+
+        return $configs;
+    }
+
+    /**
+     * Gets modules requirements files
+     * @return array
+     */
+    public function gerRequirementsFiles()
+    {
+        $requirements = [];
+
+        foreach ($this->getSearchPaths() as $alias) {
+            $path = Yii::getAlias($alias);
+            $files = FileHelper::findFiles($path, ['only' => ['*/' . self::REQUIREMENTS_FILE]]);
+
+            foreach ($files as $file) {
+                try {
+                    $requirements[] = require($file);
+                } catch (Exception $e) {
+                    Yii::trace("Failed loading requirements.php file: {$e->getMessage()}", __METHOD__);
+                }
+            }
+        }
+
+        return $requirements;
+    }
+
+    /**
      *
-     * Loads all enabled moduleId's from database
      */
     public function init()
     {
         parent::init();
 
-        if (!Yii::$app->params['installed']) {
-            return;
-        }
-
-        $this->enabledModules = self::getEnabledIds();
+        $this->enabledIds = $this->getEnabledIds();
     }
 
     /**
      * @return array
      */
-    public static function getEnabledIds()
+    public function getEnabledIds()
     {
         $ids = Yii::$app->cache->get(self::CACHE_ENABLED);
 
@@ -112,9 +145,9 @@ class ModuleManager extends Component implements BootstrapInterface
     /**
      * Flushes module manager configs cache
      */
-    public function flushConfigs()
+    public function flushCache()
     {
-        Yii::$app->cache->delete(self::CACHE_CONFIG_ID);
+        Yii::$app->cache->delete(self::CACHE_CONFIGS);
     }
 
     /**
@@ -141,68 +174,70 @@ class ModuleManager extends Component implements BootstrapInterface
 
         $id = $config['id'];
 
-        if (isset($this->modules[$id])) {
+        if (isset($this->definitions[$id])) {
+            /**
+             * If this module already loaded just pass away
+             */
             return;
         }
 
         $definition = new ModuleDefinition($config);
 
+        /**
+         * Required modules always enabled
+         */
         if ($definition->required) {
-            $this->enabledModules[] = $id;
+            $this->enabledIds[] = $id;
         }
 
         // Not enabled and not core module
-        if (!$definition->isCore() && !in_array($id, $this->enabledModules)) {
+        if (!$definition->isCore() && !in_array($id, $this->enabledIds)) {
             return;
         }
 
-        if ($definition->isCore()) {
-            $this->coreModules[$id] = $definition;
+        if (isset($config['bootstrap']) && is_callable($config['bootstrap'])) {
+            $config['bootstrap'](Yii::$app);
         }
 
         $definition->register();
 
-        $this->modules[$id] = $definition;
-    }
-
-    public function getPaths()
-    {
-        return ArrayHelper::getValue(Yii::$app->params, 'modules.path', ['@app/modules']);
+        $this->definitions[$id] = $definition;
     }
 
     /**
      * @return ModuleDefinition[]
      */
-    public function getModules()
+    public function getModuleDefinitions()
     {
-        return $this->modules;
+        return $this->definitions;
     }
 
     /**
+     * Returns only enabled modules
      * @return array
      */
     public function getEnabledModules()
     {
-        return array_filter($this->modules, [$this, 'filterEnabled']);
+        return array_filter($this->definitions, [$this, 'filterEnabled']);
     }
 
-    protected function filterEnabled(ModuleDefinition $definition)
+    public function getCoreModules()
     {
-        return in_array($definition->id, $this->enabledModules);
+        return array_filter($this->definitions, [$this, 'filterCore']);
     }
 
     /**
      * Returns a module instance by id
      *
      * @param string $id Module Id
-     * @param boolean $disabled
+     * @param boolean $forceDisabled force if module disabled
      * @return \yii\base\Module
      * @throws Exception
      * @throws InvalidConfigException
      */
-    public function getModule($id, $disabled = false)
+    public function getModule($id, $forceDisabled = false)
     {
-        if (!isset($this->modules[$id])) {
+        if (!isset($this->definitions[$id])) {
             throw new Exception("Could not find requested module: {$id}");
         }
 
@@ -210,12 +245,35 @@ class ModuleManager extends Component implements BootstrapInterface
             return Yii::$app->getModule($id);
         }
 
-        if ($disabled) {
-            $this->modules[$id]->register();
+        if ($forceDisabled) {
+            /** @var ModuleDefinition $definition */
+            $definition = $this->definitions[$id];
+
+            $definition->register();
 
             return Yii::$app->getModule($id);
         }
 
         return null;
+    }
+
+    /**
+     * Callback for filtering only enabled modules
+     * @param ModuleDefinition $definition
+     * @return bool
+     */
+    protected function filterEnabled(ModuleDefinition $definition)
+    {
+        return in_array($definition->id, $this->enabledIds);
+    }
+
+    /**
+     * Callback for filtering only core modules
+     * @param ModuleDefinition $definition
+     * @return bool
+     */
+    protected function filterCore(ModuleDefinition $definition)
+    {
+        return $definition->isCore();
     }
 }

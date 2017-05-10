@@ -1,25 +1,26 @@
 <?php
 
 $routes = require(__DIR__ . '/routes.php');
+$params = require(__DIR__ . '/params.php');
 
 $config = [
     'id' => 'site',
     'name' => $params['title'],
     'bootstrap' => [
+        'log',
+        '\app\base\ModuleManager',
         $params['theme']
     ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => $params['cookieKey'],
+            'cookieValidationKey' => $params['cookie.key'],
             'parsers' => [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
         'user' => [
-            'class' => 'app\web\User',
             'identityClass' => 'app\models\User',
-            'loginUrl' => ['/user/default/login'],
             'enableAutoLogin' => true,
         ],
         'assetManager' => [
@@ -34,9 +35,6 @@ $config = [
             'theme' => [
                 'class' => $params['theme']
             ]
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/default/error',
         ],
     ]
 ];

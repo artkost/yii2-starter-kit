@@ -9,5 +9,6 @@ return [
 
     'modules.path' => ['@app/modules', '@modules'],
 
-    'installed' => false
+    'modules.installed' => false,
+    'db.installed' => false
 ];

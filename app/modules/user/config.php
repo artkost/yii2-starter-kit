@@ -9,12 +9,20 @@ return [
     'config' => [
         //set module config, like it loaded from default config
     ],
-
+    'bootstrap' => function (\yii\base\Application $app) {
+        if ($app instanceof \yii\web\Application) {
+            $app->getUser()->loginUrl = ['/user/default/login'];
+        }
+    },
     'weight' => 123,
 
     'name' => 'User Managment',
     'package' => ModuleDefinition::PACKAGE_CORE,
     'required' => true,
+
+    'dependencies' => [
+        'rbac'
+    ],
 
     'menu' => [
         'user.index' => [

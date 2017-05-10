@@ -30,21 +30,21 @@ class ManagerController extends Controller
 
     protected function onRuleAdd(Event $event)
     {
-        $this->stdout('Rule ');
+        $this->stdout('Add Rule ');
         $this->stdout($event->params['rule']->name, Console::FG_BLUE);
         echo PHP_EOL;
     }
 
     protected function onPermissionAdd(Event $event)
     {
-        $this->stdout('Permission ');
+        $this->stdout('Add Permission ');
         $this->stdout($event->params['permission']->name, Console::FG_BLUE);
         echo PHP_EOL;
     }
 
     protected function onRoleAdd(Event $event)
     {
-        $this->stdout('Role ');
+        $this->stdout('Add Role ');
         $this->stdout($event->params['role']->name, Console::FG_YELLOW);
         echo PHP_EOL;
     }

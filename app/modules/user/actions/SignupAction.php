@@ -24,7 +24,9 @@ class SignupAction extends Action
      */
     public function run()
     {
+        /** @var \app\modules\user\models\User $user */
         $user = Yii::createObject($this->modelClass, ['scenario' => 'signup']);
+        /** @var \app\modules\user\models\UserProfile $profile */
         $profile = Yii::createObject($this->profileClass);
 
         $post = Yii::$app->request->post();

@@ -27,5 +27,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'fileMap' => [
             ]
         ];
+
+        $app->errorHandler->errorAction = ['site/default/error'];
     }
 }

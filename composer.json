@@ -1,6 +1,6 @@
 {
-	"name": "anidesu",
-	"description": "Anidesu anime site",
+	"name": "yii2-starter-kit",
+	"description": "Yii2 Starter Kit",
 	"keywords": ["yii2"],
 	"homepage": "http://www.yiiframework.com/",
 	"type": "project",
@@ -17,16 +17,18 @@
 		"php": ">=5.4.0",
         "yiisoft/yii2": "@stable",
 		"yiisoft/yii2-bootstrap": "@stable",
-		"yiisoft/yii2-swiftmailer": "*",
-		"yiisoft/yii2-redis": "*",
-		"yiisoft/yii2-authclient": "*",
-		"yiisoft/yii2-twig": "*",
-		"yiisoft/yii2-imagine": "*",
-        "yiisoft/yii2-jui": "@stable",
+		"yiisoft/yii2-swiftmailer": "@stable",
+		"yiisoft/yii2-redis": "@stable",
+		"yiisoft/yii2-authclient": "@stable",
+		"yiisoft/yii2-twig": "@stable",
+		"yiisoft/yii2-imagine": "@stable",
+        "samdark/yii2-webshell": "@stable",
 
         "dmstr/yii2-migrate-command": "*",
 		"artkost/yii2-attachment": "dev-master",
-		"artkost/yii2-taxonomy": "dev-master"
+		"artkost/yii2-taxonomy": "dev-master",
+		"bariew/yii2-module-migration-controller": "*",
+		"yiisoft/yii2-jui": "^2.0"
     },
 	"require-dev": {
         "yiisoft/yii2-debug": "*",

@@ -17,10 +17,13 @@ class Application extends \yii\web\Application
         /**
          * Check if it's already installed - if not force controller module
          */
-        if (!$this->params['installed'] && $this->controller->module != null && $this->controller->module->id != 'installer') {
-            $this->controller->redirect(Url::to(self::INSTALL_ROUTE));
-            return false;
-        }
+//        if (!$this->params['modules.installed'] &&
+//            $this->controller->module != null &&
+//            $this->controller->module->id != 'installer'
+//        ) {
+//            $this->controller->redirect(Url::to(self::INSTALL_ROUTE));
+//            return false;
+//        }
 
         /**
          * More random widget autoId prefix

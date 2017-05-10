@@ -31,7 +31,7 @@ class Module extends BaseModule implements BootstrapInterface
         } else {
             if ($app->id = 'admin') {
                 // Add module URL rules.
-                $app->getUrlManager()->addRules(
+                $app->urlManager->addRules(
                     [
                         '' => 'admin/default/index',
                         '<_m>/<_c>/<_a>' => '<_m>/<_c>/<_a>'
