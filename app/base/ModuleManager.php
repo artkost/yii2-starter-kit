@@ -31,7 +31,7 @@ class ModuleManager extends Component implements BootstrapInterface
      *
      * @param ModuleDefinition[] $config moduleId => class pairs
      */
-    protected $definitions;
+    protected $definitions = [];
 
     /**
      * List of all enabled module ids
@@ -42,17 +42,7 @@ class ModuleManager extends Component implements BootstrapInterface
 
     public function bootstrap($app)
     {
-        $configs = $app->getCache()->get(self::CACHE_CONFIGS);
-
-        if ($configs === false) {
-            $configs = $this->getConfigFiles();
-
-            if (!YII_DEBUG && !empty($configs)) {
-                $app->getCache()->set(self::CACHE_CONFIGS, $configs);
-            }
-        }
-
-        $app->get('moduleManager')->registerModules($configs);
+        $app->get('moduleManager')->registerModules($this->getConfigFiles());
     }
 
     /**

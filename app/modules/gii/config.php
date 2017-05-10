@@ -12,7 +12,7 @@ return [
 
     'name' => 'Code Generator',
     'package' => ModuleDefinition::PACKAGE_CORE,
-    'required' => false,
+    'required' => true,
 
     'menu' => [
         'gii.index' => [

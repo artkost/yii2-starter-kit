@@ -8,12 +8,12 @@ use yii\helpers\ArrayHelper;
 
 class MenuCollection extends Object
 {
-    protected $items;
+    protected $items = [];
 
     /**
      * @var ModuleDefinition[]
      */
-    public $definitions;
+    public $definitions = [];
 
     public function init()
     {
